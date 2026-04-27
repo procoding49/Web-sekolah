@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Guru</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>Sekolah</h2>
+  <a href="index.html">Home</a>
+  <a href="guru.html">Guru</a>
+</div>
+
+<div class="content">
+  <h1>Data Guru</h1>
+  <div id="guru-list"></div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "API_KEY_KAMU",
+    authDomain: "PROJECT.firebaseapp.com",
+    projectId: "PROJECT_ID",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const container = document.getElementById("guru-list");
+
+  async function loadGuru() {
+    const querySnapshot = await getDocs(collection(db, "guru"));
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      container.innerHTML += `
+        <div class="card">
+          <h3>${data.nama}</h3>
+          <p>Mapel: ${data.mapel}</p>
+        </div>
+      `;
+    });
+  }
+
+  loadGuru();
+</script>
+
+</body>
+</html>
